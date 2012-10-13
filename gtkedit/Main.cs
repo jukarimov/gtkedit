@@ -8,7 +8,13 @@ namespace gtkedit
 		public static void Main (string[] args)
 		{
 			Application.Init ();
-			MainWindow win = new MainWindow ();
+			
+			string filearg = "";
+			
+			if (args.Length == 1)
+				filearg = args[0];
+
+			MainWindow win = new MainWindow (filearg);
 			win.Show ();
 			Application.Run ();
 		}

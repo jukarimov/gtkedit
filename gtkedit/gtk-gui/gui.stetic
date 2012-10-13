@@ -46,10 +46,14 @@
       </action>
     </action-group>
     <property name="MemberName" />
-    <property name="WidthRequest">20</property>
-    <property name="HeightRequest">20</property>
+    <property name="WidthRequest">80</property>
+    <property name="HeightRequest">25</property>
     <property name="Title" translatable="yes">GTKEdit:</property>
+    <property name="Icon">stock:gtk-edit Menu</property>
     <property name="WindowPosition">CenterOnParent</property>
+    <property name="BorderWidth">1</property>
+    <property name="DefaultWidth">800</property>
+    <property name="DefaultHeight">400</property>
     <signal name="DeleteEvent" handler="OnDeleteEvent" />
     <child>
       <widget class="Gtk.VBox" id="vbox1">

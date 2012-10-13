@@ -37,11 +37,15 @@ public partial class MainWindow
 		w1.Add (this.CloseAction, "<Control>q");
 		this.UIManager.InsertActionGroup (w1, 0);
 		this.AddAccelGroup (this.UIManager.AccelGroup);
-		this.WidthRequest = 20;
-		this.HeightRequest = 20;
+		this.WidthRequest = 80;
+		this.HeightRequest = 25;
 		this.Name = "MainWindow";
 		this.Title = global::Mono.Unix.Catalog.GetString ("GTKEdit:");
+		this.Icon = global::Stetic.IconLoader.LoadIcon (this, "gtk-edit", global::Gtk.IconSize.Menu);
 		this.WindowPosition = ((global::Gtk.WindowPosition)(4));
+		this.BorderWidth = ((uint)(1));
+		this.DefaultWidth = 800;
+		this.DefaultHeight = 400;
 		// Container child MainWindow.Gtk.Container+ContainerChild
 		this.vbox1 = new global::Gtk.VBox ();
 		this.vbox1.Name = "vbox1";
@@ -76,8 +80,6 @@ public partial class MainWindow
 		if ((this.Child != null)) {
 			this.Child.ShowAll ();
 		}
-		this.DefaultWidth = 381;
-		this.DefaultHeight = 370;
 		this.Show ();
 		this.DeleteEvent += new global::Gtk.DeleteEventHandler (this.OnDeleteEvent);
 		this.FileAction.Activated += new global::System.EventHandler (this.MenuFileClicked);

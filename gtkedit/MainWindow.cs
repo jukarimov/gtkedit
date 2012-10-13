@@ -13,10 +13,16 @@ public partial class MainWindow: Gtk.Window
 		this.GdkWindow.Title = "GTKEdit> " + title;
 	}
 	
-	public MainWindow (): base (Gtk.WindowType.Toplevel)
+	public MainWindow (string file_argument): base (Gtk.WindowType.Toplevel)
 	{
 		Build ();
-		this.setWindowTitle("New file");
+		if (file_argument == "")
+			this.setWindowTitle("New file");
+		else {
+			this.setWindowTitle(file_argument);
+			this.try_to_read(file_argument);
+			this.this_file_name = file_argument;
+		}
 	}
 	
 	public bool QuitWithoutSaving()
@@ -79,6 +85,7 @@ public partial class MainWindow: Gtk.Window
 		try {
 			fs.Read(bytearray, 0, (int)fs.Length);
 			textview1.Buffer.Text = Encoding.UTF8.GetString(bytearray);
+			textview1.Buffer.Modified = false;
 			fs.Close();
 		} catch {
 			Console.WriteLine("Failed to read file");
@@ -91,6 +98,14 @@ public partial class MainWindow: Gtk.Window
 	protected void OnDeleteEvent (object sender, DeleteEventArgs a)
 	{
 		Console.WriteLine("WindowClose clicked");
+		
+		if (textview1.Buffer.Modified == false)
+		{
+			Console.WriteLine("Quitting...");
+			Application.Quit();
+			a.RetVal = true;
+			return;
+		}
 
 		bool quit_without_save = true;
 		
@@ -120,19 +135,35 @@ public partial class MainWindow: Gtk.Window
 															 "Cancel", ResponseType.Cancel,
 															 "Open", ResponseType.Accept);
 		
-		if (fc.Run() == (int) ResponseType.Accept)
+		ResponseType rt = (ResponseType)fc.Run();
+		
+		if (rt == ResponseType.Accept)
 			this.this_file_name = fc.Filename;
+		else {
+			fc.Destroy();
+			return;
+		}
 
 		fc.Destroy();
 		
-		this.setWindowTitle(this.this_file_name);
-		
 		bool ok = this.try_to_read(this.this_file_name);
 		
-		if (ok)
+		if (ok) {
 			Console.WriteLine("Opened " + this.this_file_name);
-		else
-			Console.WriteLine("FAILED to open " + this.this_file_name);
+			this.setWindowTitle(this.this_file_name);
+		} else {
+			Console.WriteLine("Failed to open " + this.this_file_name);
+			
+			MessageDialog md = new MessageDialog(this,
+											 		DialogFlags.Modal,
+											 		MessageType.Error,
+													ButtonsType.Cancel,
+											 		"Failed to open " + this.this_file_name);
+			
+			md.Run();
+			
+			md.Destroy();
+		}
 	}
 
 	protected void MenuFileSaveClicked (object sender, System.EventArgs e)
@@ -148,20 +179,36 @@ public partial class MainWindow: Gtk.Window
 															 "Cancel", ResponseType.Cancel,
 															 "Save", ResponseType.Accept);
 		
-			if (fc.Run() == (int) ResponseType.Accept)
-			{	
-				this.this_file_name = fc.Filename;
+			ResponseType rt = (ResponseType)fc.Run();
+			
+			if (rt == ResponseType.Accept)	
+				this.this_file_name = fc.Filename;			
+			else {
 				fc.Destroy();
-				this.setWindowTitle(this.this_file_name);
-			}
-			else
 				return;
+			}
+			
+			fc.Destroy();
 		}
 		
-		if ((this.file_saved = this.try_to_write(this.this_file_name)) == true)
+		if ((this.file_saved = this.try_to_write(this.this_file_name)) == true) {
 			Console.WriteLine("Saved to " + this.this_file_name);
-		else
+			this.setWindowTitle(this.this_file_name);
+		}
+		else {
 			Console.WriteLine("Failed to save `" + this.this_file_name + "`");
+
+			MessageDialog md = new MessageDialog(this,
+											 		DialogFlags.Modal,
+											 		MessageType.Error,
+													ButtonsType.Cancel,
+											 		"Failed to save to " + this.this_file_name);
+			
+			md.Run();
+			
+			md.Destroy();
+
+		}
 	}
 
 	protected void MenuFileSaveAsClicked (object sender, System.EventArgs e)
@@ -178,13 +225,26 @@ public partial class MainWindow: Gtk.Window
 		if (fc.Run() == (int) ResponseType.Accept)
 		{
 			string fileToSaveAs = fc.Filename;
-			fc.Destroy();
 
 			if (this.try_to_write(fileToSaveAs) == true)
 				Console.WriteLine("Saved as " + fileToSaveAs);
 			else
+			{
 				Console.WriteLine("Failed to save as `" + fileToSaveAs + "`");
+				
+				MessageDialog md = new MessageDialog(this,
+											 		 DialogFlags.Modal,
+											 		 MessageType.Error,
+													 ButtonsType.Cancel,
+											 		 "Failed to save as " + fileToSaveAs);
+			
+				md.Run();
+
+				md.Destroy();
+			}
 		}
+		
+		fc.Destroy();
 	}
 
 	protected void MenuFileCloseClicked (object sender, System.EventArgs e)
@@ -202,4 +262,5 @@ public partial class MainWindow: Gtk.Window
 		Console.WriteLine("Quitting...");
 		Application.Quit();
 	}
+
 }
