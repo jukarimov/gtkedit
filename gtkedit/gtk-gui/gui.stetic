@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<stetic-interface>
+  <configuration>
+    <images-root-path>..</images-root-path>
+    <target-gtk-version>2.12</target-gtk-version>
+  </configuration>
+  <import>
+    <widget-library name="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <widget-library name="../bin/Debug/gtkedit.exe" internal="true" />
+  </import>
+  <widget class="Gtk.Window" id="MainWindow" design-size="381 370">
+    <action-group name="Default">
+      <action id="FileAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">File</property>
+        <property name="ShortLabel" translatable="yes">File</property>
+        <signal name="Activated" handler="MenuFileClicked" />
+      </action>
+      <action id="OpenAction">
+        <property name="Type">Action</property>
+        <property name="Accelerator">&lt;Control&gt;o</property>
+        <property name="Label" translatable="yes">Open</property>
+        <property name="ShortLabel" translatable="yes">Open</property>
+        <signal name="Activated" handler="MenuFileOpenClicked" />
+      </action>
+      <action id="SaveAction">
+        <property name="Type">Action</property>
+        <property name="Accelerator">&lt;Control&gt;w</property>
+        <property name="Label" translatable="yes">Save</property>
+        <property name="ShortLabel" translatable="yes">Save</property>
+        <signal name="Activated" handler="MenuFileSaveClicked" />
+      </action>
+      <action id="SaveAsAction">
+        <property name="Type">Action</property>
+        <property name="Accelerator">&lt;Control&gt;s</property>
+        <property name="Label" translatable="yes">Save As</property>
+        <property name="ShortLabel" translatable="yes">Close</property>
+        <signal name="Activated" handler="MenuFileSaveAsClicked" />
+      </action>
+      <action id="CloseAction">
+        <property name="Type">Action</property>
+        <property name="Accelerator">&lt;Control&gt;q</property>
+        <property name="Label" translatable="yes">Close</property>
+        <property name="ShortLabel" translatable="yes">Close</property>
+        <signal name="Activated" handler="MenuFileCloseClicked" />
+      </action>
+    </action-group>
+    <property name="MemberName" />
+    <property name="WidthRequest">20</property>
+    <property name="HeightRequest">20</property>
+    <property name="Title" translatable="yes">GTKEdit:</property>
+    <property name="WindowPosition">CenterOnParent</property>
+    <signal name="DeleteEvent" handler="OnDeleteEvent" />
+    <child>
+      <widget class="Gtk.VBox" id="vbox1">
+        <property name="MemberName" />
+        <property name="Spacing">6</property>
+        <child>
+          <widget class="Gtk.MenuBar" id="menubar2">
+            <property name="MemberName" />
+            <node name="__gtksharp_132_Stetic_Editor_ActionMenuBar" type="Menubar">
+              <node type="Menu" action="FileAction">
+                <node type="Menuitem" action="OpenAction" />
+                <node type="Menuitem" action="SaveAction" />
+                <node type="Menuitem" action="SaveAsAction" />
+                <node type="Menuitem" action="CloseAction" />
+              </node>
+            </node>
+          </widget>
+          <packing>
+            <property name="Position">0</property>
+            <property name="AutoSize">True</property>
+            <property name="Expand">False</property>
+            <property name="Fill">False</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.ScrolledWindow" id="GtkScrolledWindow">
+            <property name="MemberName" />
+            <property name="ShadowType">In</property>
+            <child>
+              <widget class="Gtk.TextView" id="textview1">
+                <property name="MemberName" />
+                <property name="WidthRequest">50</property>
+                <property name="HeightRequest">200</property>
+                <property name="CanFocus">True</property>
+                <property name="ShowScrollbars">True</property>
+                <property name="Text" translatable="yes" />
+                <property name="WrapMode">Word</property>
+                <property name="LeftMargin">2</property>
+                <property name="RightMargin">5</property>
+              </widget>
+            </child>
+          </widget>
+          <packing>
+            <property name="Position">1</property>
+            <property name="AutoSize">True</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder />
+        </child>
+      </widget>
+    </child>
+  </widget>
+</stetic-interface>
